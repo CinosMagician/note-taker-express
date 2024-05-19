@@ -1,5 +1,5 @@
 const apiRoute = require('express').Router();
-const { readAndAppend, readFromFile } = require('../helpers/fsUtils');
+const { readAndAppend, readFromFile, writeToFile } = require('../helpers/fsUtils');
 const uuid = require('../helpers/uuid');
 
 apiRoute.get('/notes', (req, res) => {
@@ -7,7 +7,7 @@ apiRoute.get('/notes', (req, res) => {
     console.log(`Reading notes db...`);
 });
 
-apiRoute.get('/id', (req, res) => {
+apiRoute.get('/:id', (req, res) => {
     readFromFile('./db/id.json').then((data) => res.json(JSON.parse(data)))
     console.log(`Reading id number`);
 });
@@ -29,5 +29,21 @@ apiRoute.post('/notes', (req, res) => {
         res.error('Error in adding note');
     }
   });
+
+  apiRoute.delete('/notes/:id', (req, res) => {
+    const id = req.params.id;
+
+    readFromFile('./db/db.json')
+        .then((data) => {
+            let notes = JSON.parse(data);
+            notes = notes.filter((note) => note.id !== id);
+            writeToFile('./db/db.json', notes);
+            res.json(`Note with ID ${id} deleted successfully`);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error deleting note');
+        });
+});
 
 module.exports = apiRoute;
