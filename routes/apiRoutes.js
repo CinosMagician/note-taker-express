@@ -30,7 +30,7 @@ apiRoute.post('/notes', (req, res) => {
     }
   });
 
-  apiRoute.delete('/notes/:id', (req, res) => {
+apiRoute.delete('/notes/:id', (req, res) => {
     const id = req.params.id;
 
     readFromFile('./db/db.json')
