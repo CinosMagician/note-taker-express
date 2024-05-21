@@ -5,11 +5,10 @@ const html = require('./routes/htmlRoutes');
 
 // Setting up our port to either be the process environments port or to use 3001
 const PORT = process.env.PORT || 3001;
-
 const app = express();
-// Using express as our middleware
 app.use(express.static('public'));
 
+// Express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,7 +17,8 @@ app.use('/api', api);
 app.use('/', html);
 
 
-// Was added for testing on local machine
+// Used to listen onto the port.
 app.listen(PORT, () =>
+// This code was used to access the site when testing on local machine
   console.log(`App listening at http://localhost:${PORT}`)
 );
