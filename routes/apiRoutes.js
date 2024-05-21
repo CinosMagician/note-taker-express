@@ -7,11 +7,6 @@ apiRoute.get('/notes', (req, res) => {
     console.log(`Reading notes db...`);
 });
 
-apiRoute.get('/:id', (req, res) => {
-    readFromFile('./db/id.json').then((data) => res.json(JSON.parse(data)))
-    console.log(`Reading id number`);
-});
-
 apiRoute.post('/notes', (req, res) => {
     const { title, text} = req.body;
 
